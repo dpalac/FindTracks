@@ -1,4 +1,0 @@
-/home/david/PhD/FindTracks/build/CMakeFiles/RNSC.dir
-/home/david/PhD/FindTracks/build/CMakeFiles/Tracks.dir
-/home/david/PhD/FindTracks/build/CMakeFiles/edit_cache.dir
-/home/david/PhD/FindTracks/build/CMakeFiles/rebuild_cache.dir
