@@ -64,42 +64,38 @@ int main(int argc, char** argv) {
     UInt_t framenrBuff = framenr;
   
     vector<vector<double>> dataset;
-
+	
+//Loop over all the entries
 for (Long64_t jentry=1; jentry<nentries;jentry++) {
     Long64_t ientry = tree->LoadTree(jentry);
       
     if (ientry < 0) break;
     
     nb = tree->GetEntry(jentry);   nbytes += nb;
-      
-    UShort_t xpixc = xpix - 258;
+
+   	
+    UShort_t xpixc = xpix - 258; //This line is needed because the X pixels start in 258 (I do not know why)
+
+    //Taking data with the same framenr (same event) 	
     if(framenrBuff == framenr){      
         vector<double> row = {xpixc, ypix, ToA, ToT, framenr};
         dataset.push_back(row);
         
     }
+
+    //Running RANSAC when all the points of an event have been recorded to dataset
     else{   
      
        
         Ransac ransac(dataset);
         ransac.execute();
         ransac.displayResult();
-
-        // Clear the dataset
-       dataset.clear();
+        dataset.clear();
         dataset.shrink_to_fit(); // Deallocate memory
-        framenrBuff = framenr;
+        framenrBuff = framenr; //Changing framenr to repeat the process with the next event
     }
    
 }  
-
-
-if (!dataset.empty()) {
-    Ransac ransac(dataset);
-    ransac.execute();
-    ransac.displayResult();
-}
-
     theApp.Run();
 	return 0;
 }
