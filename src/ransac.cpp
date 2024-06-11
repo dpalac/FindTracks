@@ -117,7 +117,6 @@ double operator() (const double *par) {
          sum += d;
       }
       if (first) {
-         //std::cout << "Total Initial distance square = " << sum << std::endl;
       }
       first = false;
       return sum;
@@ -142,7 +141,8 @@ Vector3d Pfinal,Qfinal;
 
 TPolyLine3D *l1 = new TPolyLine3D();
 void Ransac::execute() {
-    
+	
+ //Set the threshold  
  if(th){
 cout << "Threshold: ";
 cin >> ransac_thresh;
@@ -150,7 +150,7 @@ th = false;
 }
 
 srand(time(NULL));
-//set the sample data
+
 
 //double m = 0.05;
 float random = 0.5f;
@@ -168,7 +168,7 @@ float noise_scale = 2.0;
 
 
 
-
+//Recording the X, Y and ToA in three different vectors (I am not sure if this is needed, probably it is not)
 for (uint32_t i = 0; i < dataset.size(); i++){
 Vector3d Pt;
 Pt[0] = dataset[i][0];
@@ -191,7 +191,7 @@ bool niter = true;
 int num = 0;
 line line_fitting(double ransac_ratio, double ransac_thresh,vector<Vector3d>& points)
 {
-    
+    //Setting the number of iterations
    if(niter){
     std::cout << "Number of iterations: ";
     std::cin >> ransac_iter;
@@ -207,7 +207,7 @@ double ratio = 0.0;
   vector<int>indices;
 
 
-
+//This is the RANSAC algorithm
 for(int i = 0;i<n_samples;i++)
     indices.push_back(i);
 
@@ -316,7 +316,7 @@ double avg = Sum/n_samples;
 
 
 num = num+2;
-
+   //Choosing the line with the most number of inlier points
    if(num/(float)n_samples > ratio)
    {
        ratio = (num)/(float)n_samples;
@@ -352,8 +352,9 @@ num = num+2;
     y_outliers_aux.clear();
     z_outliers_aux.clear();
    }
-}
+}//RANSAC algorithm ends here
 
+//Only the lines with more than 90 inlier points are going to be consider tracks (I chose 90, but probably there is a better option)	
 if(x_inliers.size() > 90){
     Direc_vec.push_back(l.Dir_vec);
     Posit_vec.push_back(l.pos_vec);
@@ -381,7 +382,7 @@ if(x_inliers.size() > 90){
     y_inliers.clear();
     z_inliers.clear();
 
-
+    //If there is one track, repeat the proccess to check if there are more
     line new_line = line_fitting(ransac_ratio, ransac_thresh, points);
 }
 
@@ -392,54 +393,6 @@ return l;
 
 
 void Ransac::displayResult() {
-	cout << endl << endl;
-
-
-    diff_ToA = z_inliers;
-
-
- std::sort(diff_ToA.begin(), diff_ToA.end());
-
-
-  auto last2 = std::unique(diff_ToA.begin(), diff_ToA.end());
-   
-    diff_ToA.erase(last2, diff_ToA.end());
-
-
-vector<Pixel> pixel_in;
-for(int i = 0; i<diff_ToA.size(); i++){
-   
-    for (int j = 0; j < x_inliers.size(); j++)
-    {
-        for (int k = 0; k < dataset.size(); k++)
-        {
-
-            if(diff_ToA[i] == dataset[k][2] && x_inliers[j] == dataset[k][0] && y_inliers[j] == dataset[k][1])
-            {
-        
-                Pixel p;
-                p.x = x_inliers[j];
-                p.y = y_inliers[j];
-                p.cl = dataset[k][2];
-                p.ToA = dataset[k][2];
-                p.ToT = dataset[k][3];
-                pixel_in.push_back(p);
-            }
-
-            }
-        }
-        
-    }
-    
-vector<Pixel> A[diff_ToA.size()];
-
-for(uint32_t i = 0; i < diff_ToA.size(); i++){
-uint32_t index = diff_ToA[i];
-	 auto px = std::copy_if(pixel_in.begin(), pixel_in.end(), std::back_inserter(A[i]), [index](Pixel p){
-             return p.ToA == index;
-			 });
-}
-
 
 if(num_values.size() == 0){
     cout<<"There are no tracks!!"<<endl;
@@ -464,7 +417,7 @@ if(num_values.size() >= 2){
         double crossMagnitude = sqrt(cross[0] * cross[0] + cross[1] * cross[1] + cross[2] * cross[2]);
         double dist = std::abs(dot) / crossMagnitude;
         distances.push_back(dist);
-          //  if (dist <= 3){
+          //  if (dist <= 3){ 
         // Calculate the angle between the two direction vectors
         double dotProduct = Direc_vec[i][0] * Direc_vec[j][0] + Direc_vec[i][1] * Direc_vec[j][1] + Direc_vec[i][2] * Direc_vec[j][2];
         double magnitudeI = sqrt(Direc_vec[i][0] * Direc_vec[i][0] + Direc_vec[i][1] * Direc_vec[i][1] + Direc_vec[i][2] * Direc_vec[i][2]);
@@ -474,7 +427,7 @@ if(num_values.size() >= 2){
         angles.push_back(angle);
 
 
-        std::cout << "Scattering event detected with an angle of "<<angle<<" degrees" << std::endl;
+        std::cout << "Scattering event detected with an angle of "<<angle<<" degrees" << std::endl; //This is not true, I have to check the distance between the lines before, but just a starting point
        //}
     }
 }
