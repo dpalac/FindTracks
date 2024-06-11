@@ -62,8 +62,6 @@ private:
 
 	string fileName;
 
-	//ransacResult result;
-
 public:
 
 	vector < vector <double > > dataset;
@@ -74,14 +72,6 @@ public:
 
 	std::vector<Cluster> Clusters;
 
-	//std::vector<int> labels_;
-
-	//std::vector<int> normalizedLabels_;
-
-	//std::vector<outlierScore>outlierScores_;
-
-	//std::vector <double> membershipProbabilities_;
-
 	uint32_t noisyPoints_;
 
 	uint32_t numClusters_;
@@ -90,8 +80,6 @@ public:
 
     std::vector<double> distances;
     std::vector<double> angles;
-	
-	//vector<vector<double>> dataset;
 
 	double dist;
 	double angle;
@@ -103,8 +91,6 @@ public:
 	}
 
 	string getFileName();
-			   
-	//int loadCsv(int numberOfValues, bool skipHeader=false);
 
 	void execute();
 
