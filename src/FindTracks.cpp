@@ -41,7 +41,8 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    TTree *tree = (TTree*)file->Get("t2");
+    TTree *tree = nullptr;
+    file->GetObject("t2", tree);
 
         if (!tree) {
         std::cout << "Error: cannot find the TTree in the ROOT file" << std::endl;
