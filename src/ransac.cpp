@@ -395,16 +395,15 @@ return l;
 void Ransac::displayResult() {
 
 if(num_values.size() == 0){
-    cout<<"There are no tracks!!"<<endl;
+    cout<<"No tracks"<<endl;
    }
 if(num_values.size() == 1){
-    cout<<"There is 1 track!!"<<endl;
+    cout<<"1 track"<<endl;
 }
 if(num_values.size() >= 2){
 
-       cout<<"There are "<<num_values.size()<<" tracks!!"<<endl;
+       cout<<num_values.size()<<" tracks"<<endl;
        cout<<endl;
-       cout<<"Number of event: "<<dataset[0][4]<<endl;
        cout<<"Checking if it is a scattering event..."<<endl;
        cout<<endl;
 
@@ -427,7 +426,7 @@ if(num_values.size() >= 2){
         angles.push_back(angle);
 
 
-        std::cout << "Scattering event detected with an angle of "<<angle<<" degrees" << std::endl; //This is not true, I have to check the distance between the lines before, but just a starting point
+        std::cout << "Scattering event with an angle of "<<angle<<" degrees" << std::endl; //This is not true, I have to check the distance between the lines before, but just a starting point
        //}
     }
 }
