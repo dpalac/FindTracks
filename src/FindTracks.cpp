@@ -85,14 +85,21 @@ for (Long64_t jentry=1; jentry<nentries;jentry++) {
 
     //Running RANSAC when all the points of an event have been recorded to dataset
     else{   
-     
-       
-        Ransac ransac(dataset);
-        ransac.execute();
-        ransac.displayResult();
-        dataset.clear();
-        dataset.shrink_to_fit(); // Deallocate memory
-        framenrBuff = framenr; //Changing framenr to repeat the process with the next event
+        if(dataset.size>10000){ //If the dataset is too big probably sparks 
+            std::cout << "Sparks!" << std::endl;
+            dataset.clear();
+            dataset.shrink_to_fit(); 
+            framenrBuff = framenr;
+         }
+		 
+        else{
+           Ransac ransac(dataset);
+           ransac.execute();
+           ransac.displayResult();
+           dataset.clear();
+           dataset.shrink_to_fit(); // Deallocate memory
+           framenrBuff = framenr; //Changing framenr to repeat the process with the next event
+	}
     }
    
 }  
